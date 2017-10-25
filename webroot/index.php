@@ -1,5 +1,12 @@
 
+
+
+
 <?php
+//
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', __DIR__ . DS . '..' . DS); // path: /../
@@ -16,10 +23,25 @@ spl_autoload_register(function($className) {
     require $path;
 });
 
-error_reporting(E_ALL);
+//1error_reporting(E_WARNING);
 try {
     \Framework\Session::start();
+    require ROOT.'vendor/autoload.php';
+
+    $loader = new Twig_Loader_Filesystem(VIEW_DIR,ROOT);
+
+    $twig=new Twig_Environment($loader,array(
+//        'cache'=>'var/cache'
+    ));
+
+    echo $twig->render('index.html.twig',['a'=>new DateTime()]);
+
+    die;
+
+
     $request = new \Framework\Request($_GET, $_POST);
+
+
 
     $router = new \Framework\Router(CONF_DIR.'routes.php');
 
@@ -65,5 +87,4 @@ try {
 } catch (\Exception $e) {
     $content = $e->getMessage();
 }
-
 echo $content;
