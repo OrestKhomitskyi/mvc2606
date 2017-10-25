@@ -10,6 +10,7 @@ class Response
     public function __construct($body)
     {
         $this->body = $body;
+        $this->headers=$_SERVER;
     }
     
     public function __toString()

@@ -1,3 +1,4 @@
+
 <?php
 
 define('DS', DIRECTORY_SEPARATOR);
@@ -15,9 +16,16 @@ spl_autoload_register(function($className) {
     require $path;
 });
 
+error_reporting(E_ALL);
 try {
     \Framework\Session::start();
-    
+    $request = new \Framework\Request($_GET, $_POST);
+
+    $router = new \Framework\Router(CONF_DIR.'routes.php');
+
+    $router->match($request);
+
+    if(!$router->getCurrent()) throw new Exception("Not found");
     $dbConfig = require CONF_DIR . 'db.php';
     
     $pdo = new \PDO(
@@ -29,23 +37,23 @@ try {
     $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     
     $container = new \Framework\Container();
-    $router = new \Framework\Router();
+
+
     $repositoryFactory = new \Framework\RepositoryFactory();
     $repositoryFactory->setPdo($pdo);
     
     $container->set('router', $router);
     $container->set('repository_factory', $repositoryFactory);
     
-    $request = new \Framework\Request($_GET, $_POST);
-    
-    $controller = $request->get('controller', 'default');
-    $action = $request->get('action', 'index');
+
+    $controller = $router->getCurrent()->controller;
+    $action = $router->getCurrent()->action;
     
     $controller = '\\Controller\\' . ucfirst($controller) . 'Controller';
     
     $controller = new $controller();
     $controller->setContainer($container);
-    
+
     $action = $action . 'Action';
     
     if (!method_exists($controller, $action)) {

@@ -2,23 +2,25 @@
 
 namespace Model\Repository;
 
+use Framework\PDOTrait;
 use Model\Entity\Feedback;
+use Model\Entity\IEntity;
 
-class FeedbackRepository
+class FeedbackRepository implements IRepository
 {
-    public static function save(Feedback $feedback)
+    use PDOTrait;
+
+    public function save(Feedback $feedback)
     {
-        global $pdo;
-        
         $data = [
             'email' => $feedback->getEmail(),
             'message' => $feedback->getMessage(),
-            'created' => $feedback->getMySqlCreated()
+            'created' => $feedback->getMySqlCreated(),
+            'ip'=>$feedback->getIp()
         ];
-        // var_dump($data);die;
-        $sql = 'INSERT INTO feedback VALUES (null, :email, :message, :created)';
-        $sth = $pdo->prepare($sql);
-        
+
+        $sql = "INSERT INTO mvc.feedback (email, message, created, ip) VALUES (:email,:message,:created,:ip)";
+        $sth = $this->pdo->prepare($sql);
         $sth->execute($data);
     }
 }

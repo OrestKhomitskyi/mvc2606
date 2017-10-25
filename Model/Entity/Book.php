@@ -2,6 +2,8 @@
 
 namespace Model\Entity;
 
+use MongoDB\BSON\Timestamp;
+
 class Book
 {
     private $id;
@@ -17,6 +19,24 @@ class Book
     private $created;
     
     private $category;
+
+    /**
+     * Book constructor.
+     * @param $title
+     * @param $description
+     * @param $price
+     * @param $active
+     * @param $created
+     * @param $category
+     */
+    public function __construct($title, $description, $price , $category)
+    {
+        $this->title = $title;
+        $this->description = $description;
+        $this->price = $price;
+        $this->created = new \DateTime();
+        $this->category = $category;
+    }
 
     /**
      * @return mixed
@@ -64,6 +84,7 @@ class Book
     
     public function getShortDescription()
     {
+        return substr($this->description,0,50).'...';
         // todo: return substr($this->description ... );
     }
 

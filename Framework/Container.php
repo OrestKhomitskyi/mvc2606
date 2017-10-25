@@ -14,7 +14,6 @@ class Container implements ContainerInterface
         
         return null;
     }
-    
     public function set($key, $object)
     {
         $this->objects[$key] = $object;

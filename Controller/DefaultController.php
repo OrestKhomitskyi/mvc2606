@@ -19,11 +19,12 @@ class DefaultController extends Controller
     
     public function feedbackAction(Request $request)
     {
+
         $form = new FeedbackForm(
             $request->post('email'),  // $_POST['email']
             $request->post('message')
         );
-        
+
         if ($request->isPost()) {
             if ($form->isValid()) {
                 
@@ -31,18 +32,19 @@ class DefaultController extends Controller
                     $form->email,
                     $form->message
                 );
-                
-                FeedbackRepository::save($feedback);
-                // $repo->save
+
+                $repository=$this->container
+                    ->get('repository_factory')
+                    ->repository('Feedback');
+                $repository->save($feedback);
+
                 
                 Session::setFlash('Saved');
                 
                 $this
                     ->container
                     ->get('router')
-                    ->redirect('/index.php?controller=default&action=feedback')
-                ;
-                
+                    ->redirect('/index.php?controller=default&action=feedback');
             }
             
             Session::setFlash('Invalid form');
@@ -50,11 +52,5 @@ class DefaultController extends Controller
             
         return $this->render('feedback.phtml', ['form' => $form]);
     }
-    
-    
-    
-    
-    
-    
-    
+
 }

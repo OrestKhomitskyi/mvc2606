@@ -11,7 +11,8 @@ class Feedback
     private $message;
     
     private $created;
-    
+
+    private $ip;
       /**
      * Feedback constructor.
      * 
@@ -24,11 +25,28 @@ class Feedback
         $this->email = $email;
         $this->message = $message;
         $this->created = new \DateTime();
+        $this->ip=$_SERVER['REMOTE_ADDR'];
     }
     
     public function getMySqlCreated()
     {
         return $this->created->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param mixed $ip
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
     }
 
     /**

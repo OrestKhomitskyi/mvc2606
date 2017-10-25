@@ -2,19 +2,13 @@
 
 namespace Model\Repository;
 
+use Framework\PDOTrait;
 use Model\Entity\Book;
-
-class BookRepository
+use Model\Entity\IEntity;
+class BookRepository implements IRepository
 {
-    private $pdo;
-    
-    public function setPdo(\PDO $pdo)
-    {
-        $this->pdo = $pdo;
-        
-        return $this;
-    }
-    
+    use PDOTrait;
+
     public function save(Book $book)
     {
         // todo: implement - check ID: if id===null => insert into.., else: update...
@@ -39,12 +33,13 @@ class BookRepository
         ;
     }
     
-    public function findAll()
+    public function findAll($page,$offset)
     {
         $pdo = $this->pdo;
         
         $collection = [];
-        $sth = $pdo->query('SELECT * FROM book ORDER BY title');
+        $startPos=$page*$offset;
+        $sth = $pdo->query("SELECT * FROM book  ORDER BY title LIMIT {$startPos},$offset");
         
         while ($data = $sth->fetch(\PDO::FETCH_ASSOC)) {
             $book = (new Book())
@@ -62,7 +57,11 @@ class BookRepository
         
         return $collection;
     }
-    
+    public function getAmount(){
+        $sth=$this->pdo->query("SELECT COUNT(mvc.book.id) FROM mvc.book");
+        return $sth->fetch()[0];
+    }
+
     public function findActive()
     {
     }

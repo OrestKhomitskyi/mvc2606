@@ -27,4 +27,13 @@ class Request
     {
         return (bool) $this->post;
     }
+    public function getUri(){
+        $uri=explode('?',$_SERVER['REQUEST_URI']);
+        return $uri[0];
+    }
+    public function mergeGet($newGet){
+        isset($newGet)?$this->get+=$newGet:$this->get;
+        isset($newGet)?$_GET+=$newGet:$_GET;
+    }
+
 }
