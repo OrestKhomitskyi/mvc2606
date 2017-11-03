@@ -1,4 +1,5 @@
 RewriteEngine On
 
-
 RewriteRule ^(.*)$ webroot/$1 [L,QSA]
+
+

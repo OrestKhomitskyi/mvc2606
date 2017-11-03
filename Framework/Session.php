@@ -20,13 +20,13 @@ abstract class Session
      * @return null
      */
      
-    public static function get($key)
+    public static function get($key,$default=null)
     {
         if (self::has($key)) {
             return $_SESSION[$key];
         }
         
-        return null;
+        return $default;
     }
     
     /**
@@ -71,4 +71,5 @@ abstract class Session
         
         return $message;
     }
+
 }

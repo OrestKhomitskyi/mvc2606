@@ -6,8 +6,9 @@ class Response
 {
     private $body;
     private $headers;
-    
-    public function __construct($body)
+    private $status;
+
+    public function __construct($body,$status=200)
     {
         $this->body = $body;
         $this->headers=$_SERVER;
@@ -16,5 +17,8 @@ class Response
     public function __toString()
     {
         return (string) $this->body;
+    }
+    public function json(){
+        return json_encode($this->body);
     }
 }

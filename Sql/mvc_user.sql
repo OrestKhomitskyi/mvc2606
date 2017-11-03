@@ -1,0 +1,2 @@
+INSERT INTO mvc.user (email, password, name, role, active, activation_code) VALUES ('admin@mvc.com', '$2y$10$BxQrIjZbAUGarc8D/VBA3.2/dNr8C/csq/0f8cwVel49yrYmhrgoK', 'Admin MVC', 'ROLE_ADMIN', 1, null);
+INSERT INTO mvc.user (email, password, name, role, active, activation_code) VALUES ('user@mvc.com', '$2y$10$pn0UhyWG0lrIvv8QGQNysupcFmUB3AcO4OW95POJQxSvJSec3Yy8u', 'User MVC', 'ROLE_USER', 1, null);

@@ -17,24 +17,23 @@ class BookController extends Controller
             ->repository('Book')
         ;
 
-
         $amount=(int)$repository->getAmount();
+
         $pageAmount=ceil($amount/BookController::BOOKS_PER_PAGE);
 
-
         $page=(int)$request->get('page');
+
         if($page<0 || $page>$pageAmount){
             return $this->container->get('router')->redirect('/books-1');
         }
+
         $page--;
 
         $pageAmount=ceil($amount/BookController::BOOKS_PER_PAGE);
 
-
-
         $books = $repository->findAll($page,BookController::BOOKS_PER_PAGE);
 
-        return $this->render('index.phtml', [
+        return $this->render('index.html.twig', [
             'books' => $books,
             'pages'=>$pageAmount
         ]);
@@ -51,7 +50,7 @@ class BookController extends Controller
 
         $book = $repository->find($id);
 
-        return $this->render('show.phtml', [
+        return $this->render('show.html.twig', [
             'book' => $book
         ]);
     }

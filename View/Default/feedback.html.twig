@@ -1,3 +1,6 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
 <h1>Contact us</h1>
 
 <form method='post'>
@@ -6,13 +9,14 @@
         name="email" 
         class="form-control" 
         placeholder="email"
-        value="<?=$form->email ?>"
-    > <br>
+        value="{{   form.email }}">
+    <br>
     
     <textarea 
         name="message" 
         class="form-control" 
-        placeholder="message"><?=$form->message ?></textarea><br>
+        placeholder="message">{{ form.message }} </textarea><br>
         
     <button class="btn btn-primary">Go</button>
 </form>
+{% endblock %}

@@ -1,0 +1,69 @@
+parameters:
+  database_user: 'root'
+  database_name: 'mvc'
+  database_host: 'localhost'
+  database_password: '0045786'
+  uploads_dir: 'uploads'
+  noreply_email: 'noreply@mvc.com'
+  some_api_key: '13e2f42f452f1ft3vtt'
+routing:
+  homepage:
+    pattern: '/'
+    controller: DefaultController
+    action: 'indexAction'
+  books_list:
+    pattern: '/books/{page}'
+    controller: BookController
+    action: 'indexAction'
+    parameters:
+      page: '[0-9]+'
+  feedback:
+    pattern: '/feedback'
+    controller: DefaultController
+    action: 'feedbackAction'
+  sign_in:
+    pattern: '/login'
+    controller: SecurityController
+    action: 'loginAction'
+  book_item:
+    pattern: '/show/{id}'
+    controller: BookController
+    action: 'showAction'
+    parameters:
+      id: '[0-9]+'
+  admin_homepage:
+    pattern: '/admin'
+    controller: Admin\DefaultController
+    action: 'indexAction'
+  cart:
+    pattern: '/cart'
+    controller: CartController
+    action: 'indexAction'
+  addtocart:
+    pattern: '/addtocart'
+    controller: CartController
+    action: 'addToCartAction'
+  logout:
+    pattern: '/logout'
+    controller: SecurityController
+    action: 'logoutAction'
+  admin_books:
+    pattern: '/admin/books'
+    controller: Admin\BookController
+    action: 'indexAction'
+  api_key:
+    pattern: '/get_api_key'
+    controller: DefaultController
+    action: 'getApiKey'
+  api:
+    pattern: '/api/{controller}/{method}/{params}/*api_key={api_key}'
+    controller: SecurityController
+    action: 'apiAction'
+    parameters:
+      controller: '[a-zA-Z]+'
+      method: '[a-zA-Z]+'
+      params: '[a-zA-Z0-9]{0,}'
+      api_key: '[a-zA-Z0-9]+'
+api_list:
+  Book:
+    resp: 'application/json'

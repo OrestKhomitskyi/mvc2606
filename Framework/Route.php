@@ -14,8 +14,9 @@ class Route
     public $pattern;
     public $controller;
     public $action;
-    public  $params;
-
+    public $params;
+    public $name;
+    public $isAdmin;
 
     /**
      * Route constructor.
@@ -24,13 +25,22 @@ class Route
      * @param $action
      * @param $params
      */
-    public function __construct($pattern, $controller, $action, array $params=null)
+    public function __construct($name,$pattern, $controller, $action, array $params=null,$isAdmin=false)
     {
+        $this->name=$name;
         $this->pattern = $pattern;
         $this->controller = $controller;
         $this->action = $action;
         $this->params = $params;
+        $this->isAdmin=$isAdmin;
     }
+
+    public function isAdmin(){
+        $check=false;
+        if(strpos($this->pattern,'/admin')===0) $check=true;
+        return $check;
+    }
+
 
 
 }

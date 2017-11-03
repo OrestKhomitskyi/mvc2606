@@ -17,7 +17,6 @@ class BookRepository implements IRepository
     public function find($id)
     {
         $pdo = $this->pdo;
-        
         $sth = $pdo->prepare('SELECT * FROM book WHERE id = :id');
         $sth->execute(['id' => $id]);
         $data = $sth->fetch(\PDO::FETCH_ASSOC);
@@ -36,7 +35,6 @@ class BookRepository implements IRepository
     public function findAll($page,$offset)
     {
         $pdo = $this->pdo;
-        
         $collection = [];
         $startPos=$page*$offset;
         $sth = $pdo->query("SELECT * FROM book  ORDER BY title LIMIT {$startPos},$offset");
@@ -57,8 +55,17 @@ class BookRepository implements IRepository
         
         return $collection;
     }
+
+    public function getAll(){
+        $pdo = $this->pdo;
+        $sth = $pdo->query("SELECT * FROM book");
+        $data=$sth->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $data;
+    }
+
     public function getAmount(){
-        $sth=$this->pdo->query("SELECT COUNT(mvc.book.id) FROM mvc.book");
+        $sth=$this->pdo->query("SELECT COUNT(id) FROM book");
         return $sth->fetch()[0];
     }
 

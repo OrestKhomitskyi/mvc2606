@@ -6,7 +6,7 @@ use Framework\Controller;
 use Framework\Request;
 use Framework\Router;
 use Framework\Session;
-use Model\FeedbackForm;
+use Model\Form\FeedbackForm;
 use Model\Entity\Feedback;
 use Model\Repository\FeedbackRepository;
 
@@ -14,12 +14,11 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-        return $this->render('index.phtml');
+        return $this->render('index.html.twig');
     }
     
     public function feedbackAction(Request $request)
     {
-
         $form = new FeedbackForm(
             $request->post('email'),  // $_POST['email']
             $request->post('message')
@@ -44,13 +43,16 @@ class DefaultController extends Controller
                 $this
                     ->container
                     ->get('router')
-                    ->redirect('/index.php?controller=default&action=feedback');
+                    ->redirect('/feedback');
             }
-            
             Session::setFlash('Invalid form');
         }
             
-        return $this->render('feedback.phtml', ['form' => $form]);
+        return $this->render('feedback.html.twig', ['form' => $form]);
+    }
+
+    public function getApiKey(Request $request){
+
     }
 
 }

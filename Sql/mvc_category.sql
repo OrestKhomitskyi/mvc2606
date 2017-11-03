@@ -1,0 +1,11 @@
+INSERT INTO mvc.category (name) VALUES ('Gorilla gorilla');
+INSERT INTO mvc.category (name) VALUES ('Papio ursinus');
+INSERT INTO mvc.category (name) VALUES ('Ninox superciliaris');
+INSERT INTO mvc.category (name) VALUES ('Tursiops truncatus');
+INSERT INTO mvc.category (name) VALUES ('Genetta genetta');
+INSERT INTO mvc.category (name) VALUES ('Macropus eugenii');
+INSERT INTO mvc.category (name) VALUES ('Larus dominicanus');
+INSERT INTO mvc.category (name) VALUES ('Trichoglossus haematodus moluccanus');
+INSERT INTO mvc.category (name) VALUES ('Himantopus himantopus');
+INSERT INTO mvc.category (name) VALUES ('Alligator mississippiensis');
+INSERT INTO mvc.category (name) VALUES ('New category');

@@ -9,7 +9,7 @@
     <title>Starter Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/css/style.css" rel="stylesheet">
@@ -17,12 +17,6 @@
   </head>
 
   <body>
-
-
-
-
-
-
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a class="navbar-brand" href="/">MVC project</a>
@@ -36,11 +30,24 @@
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="books-1">Books</a>
+            <a class="nav-link" href="/books/1">Books</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="feedback">Contact us</a>
+            <a class="nav-link" href="/feedback">Contact us</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/cart">My cart</a>
+          </li>
+
+          {% if Auth()==true %}
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Sign in</a>
+            </li>
+          {% endif %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -58,14 +65,16 @@
     </nav>
 
     <div class="container">
-      <div class='alert alert-warning flash-box'><?=\Framework\Session::getFlash() ?></div>
+      <div class='alert alert-warning flash-box'>{{ Session('getFlash') }}</div>
       <div class="starter-template">
-        <?=$content ?>
-        </div>
+          {% block content %}{% endblock %}
+
+      </div>
 
     </div><!-- /.container -->
     <script src="/js/jquery.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/cart.js"></script>
    </body>
 </html>
