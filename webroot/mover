@@ -1,0 +1,7 @@
+#!/bin/bash
+arr=(storage/*);
+for((i=0;i<${#arr[@]};i++)); do
+	s=i+1;
+	mv "${arr[$i]}" "storage/${i}.jpg";
+done
+

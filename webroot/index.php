@@ -13,14 +13,14 @@ define('ROOT', __DIR__ . DS . '..' . DS); // path: /../
 define('VIEW_DIR', ROOT . 'View' . DS); // /View
 define('CONF_DIR', ROOT . 'Config' . DS); // /Config
 define('ADMIN_DIR',VIEW_DIR.'Admin'.DS);
+define('STORAGE_DIR',__DIR__.DS.'storage'.DS);
 
 spl_autoload_register(function($className) {
     $path = ROOT . str_replace('\\', DS, $className) . '.php';
-    
+
     if (!file_exists($path)) {
         throw new \Exception("{$path} not found");
     }
-    
     require $path;
 });
 
@@ -28,7 +28,12 @@ spl_autoload_register(function($className) {
 try {
     //composer
     require ROOT.'vendor/autoload.php';
+
     \Framework\Session::start();
+    $config=Symfony\Component\Yaml\Yaml::parse(file_get_contents(CONF_DIR.'config.yml'));
+    $parameters=$config['parameters'];
+    $routes=$config['routing'];
+    $router = new \Framework\Router($routes);
     $loader = new \Twig_Loader_Filesystem(VIEW_DIR);
     $twig=new \Twig_Environment($loader);
     $twigFunction = new Twig_SimpleFunction('Session', function($method) {
@@ -40,21 +45,23 @@ try {
         }
         return false;
     });
+    $twigFunction3=new Twig_SimpleFunction('route',function ($routeName,array $params=null){
+        global $router;
+        $router->redirect($routeName,$params);
+    });
+
+
+
     $twig->addFunction($twigFunction);
     $twig->addFunction($twigFunction2);
-     $config=Symfony\Component\Yaml\Yaml::parse(file_get_contents(CONF_DIR.'config.yml'));
-    $parameters=$config['parameters'];
-    $routes=$config['routing'];
+    $twig->addFunction($twigFunction3);
+
     $api=new \Framework\API($config['api_list']);
-
-    $router = new \Framework\Router($routes);
-
-
-
 
 
     $request = new \Framework\Request($_GET, $_POST);
     $router->match($request);
+
 
     if(!$router->getCurrent()) throw new Exception("Route not found");
 
@@ -66,21 +73,21 @@ try {
     );
     $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-
-    $container = new \Framework\Container();
-
-
     $repositoryFactory = new \Framework\RepositoryFactory();
     $repositoryFactory->setPdo($pdo);
 
-    $container->setParameteres($parameters);
-    $container->set('router', $router);
-    $container->set('repository_factory', $repositoryFactory);
-    $container->set('twig',$twig);
-    $container->set('API',$api);
+    $container = (new \Framework\Container())
+        ->setParameteres($parameters)
+        ->set('router', $router)
+        ->set('repository_factory', $repositoryFactory)
+        ->set('twig',$twig)
+        ->set('API',$api)
+    ;
+
+    $api->setContainer($container);
+
     $controller = $router->getCurrent()->controller;
     $action = $router->getCurrent()->action;
-    $api->setContainer($container);
 
     $controller="\\Controller\\{$controller}";
     $controller = new $controller();
@@ -89,10 +96,11 @@ try {
     if (!method_exists($controller, $action)) {
         throw new \Exception("{$action} not found");
     }
-    
+
     $content = $controller->$action($request);
     
 } catch (\Exception $e) {
+    dump($e);
     $content = $e->getMessage();
 }
 echo $content;
