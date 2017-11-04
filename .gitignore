@@ -2,5 +2,10 @@
 .idea/
 composer.json
 composer.lock
-interviewtask/
 vendor/
+View/Admin/Book/
+View/Error/
+webroot/mover.save
+webroot/storage/*
+webroot/mover
+webroot/sda
