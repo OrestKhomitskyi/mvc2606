@@ -9,29 +9,46 @@
 namespace Controller\API;
 
 
-use Framework\API;
 use Framework\Controller;
 use Framework\Request;
 use Framework\Response;
 use Model\Repository\BookRepository;
 use MongoDB\BSON\Timestamp;
-
-class Book extends API
+use SimpleXMLElement;
+class Book extends Controller
 {
-    public function get($responseType,$params=null){
+    public function getAll($params=null){
+        header('Access-Control-Allow-Origin: *');
         header("Content-Type: application/json");
         $repo=$this->container->get('repository_factory')->repository('Book');
+
         $amount=$repo->getAmount();
         $data=$repo->getAll();
+
         $status="200";
-        if(empty($data)){
+        if(empty($data))
+        {
             $status="404";
         }
         $date=new \DateTime();
-        return  json_encode(['status'=>$status,'data'=>$data,$date]);
+        return json_encode(['status'=>$status,'books'=>$data,'lastUpdated'=>$date]);
     }
-    public function __construct()
-    {
+    public function getComplex($params=null){
+
+        header('Access-Control-Allow-Origin: *');
+        header("Content-Type: application/json");
+        $repo=$this->container->get('repository_factory')->repository('Category');
+
+        $data=$repo->fetchBooksAuthors();
+        $status="200";
+        if(empty($data))
+        {
+            $status="404";
+        }
+        $date=new \DateTime();
+        return json_encode(['status'=>$status,'mixedData'=>$data,'lastUpdated'=>$date]);
+
     }
+
 
 }

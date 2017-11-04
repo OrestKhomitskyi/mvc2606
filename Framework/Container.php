@@ -21,6 +21,7 @@ class Container implements ContainerInterface
     public function setParameteres(array $parameteres)
     {
         $this->parameteres = $parameteres;
+        return $this;
     }
 
 
@@ -36,6 +37,7 @@ class Container implements ContainerInterface
     public function set($key, $object)
     {
         $this->objects[$key] = $object;
+        return $this;
     }
 
     public function getParametre($key){

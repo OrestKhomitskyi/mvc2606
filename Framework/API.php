@@ -9,12 +9,13 @@
 namespace Framework;
 
 
-class API
+use Model\Entity\User;
+
+ class API extends Controller
 {
     private $api_list=array();
-    protected $controller;
-    protected $current_api;
-    protected $container;
+
+    private $current_api;
     /**
      * API constructor.
      * @param array $api_list
@@ -25,26 +26,30 @@ class API
     }
     public function match(Request $request){
 
+        $repo=$this->container->get('repository_factory')->repository('User');
         $uri=$request->getUri();
         $controller='\\Controller\\API\\'.ucfirst($request->get('controller'));
+
         $Apicontroller=new $controller();
         $Apicontroller->setContainer($this->container);
-
         $method=$request->get('method');
+
         $this->current_api=$this->api_list[ucfirst($request->get('controller'))];
-        if(!$this->current_api
-            || !method_exists($Apicontroller,$method)
-        )
+        if(!$this->current_api )
         {
-            throw new \Exception("Wrong");
+            throw new \Exception("Api: {$this->current_api} not found");
         }
-        $responseType=$this->current_api["resp"];
-        $params=$this->current_api["params"];
-        return $Apicontroller->$method($responseType,$params);
+        if(!method_exists($Apicontroller,$method)){
+            throw new \Exception("Api: {$this->current_api}, Method: {$method} not found");
+        }
+        if($repo->checkApi($request->get('API_KEY'))==false){
+            throw new \Exception('Invalid api_key');
+        }
+        $parameters=$this->current_api["parameters"];
+
+        return $Apicontroller->$method($parameters);
     }
-    public function setContainer($container){
-        $this->container=$container;
-    }
+
 
 
 

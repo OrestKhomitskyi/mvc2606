@@ -9,8 +9,6 @@ class Router
     private $currentRoute;
     private $routes;
 
-
-
     public  function __construct($data)
     {
         foreach ($data as $key=>$datum){
@@ -37,11 +35,13 @@ class Router
             }
         }
     }
-    public function redirect($to)
+    public function redirect($routeName,array $params=null)
     {
-        header("Location: {$to}");
+        header("Location: {$routeName}");
         die;
+
     }
+
 
     public function getCurrent(){
         return $this->currentRoute;

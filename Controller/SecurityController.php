@@ -32,8 +32,8 @@ class SecurityController extends Controller
                 $user = $container
                     ->get('repository_factory')
                     ->repository('User')
-                    ->findByEmail($form->email)
-                ;
+                    ->findByEmail($form->email);
+
                 try {
                     if (!$user) {
                         throw new UserNotFoundException();
@@ -49,7 +49,10 @@ class SecurityController extends Controller
                         ->redirect('/login');
                 }
                 Session::set('user', $user);
-                $container->get('router')->redirect('/admin');
+
+                if(User::isAdmin()===true)
+                    $container->get('router')->redirect('/admin');
+                else $container->get('router')->redirect('/');
             }
 
             Session::setFlash('Invalid form');
@@ -92,6 +95,7 @@ class SecurityController extends Controller
 
     //API
     public function apiAction(Request $request){
+        //User::guard();
         $api=$this->container->get('API');
         return $api->match($request);
     }

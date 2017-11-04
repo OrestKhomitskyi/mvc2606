@@ -15,6 +15,7 @@ class RepositoryFactory implements IRepository
      */
     public function repository($entityName)
     {
+
         if (isset($this->repositories[$entityName])) {
             // echo 'Repo exists  -returning';
             return $this->repositories[$entityName];

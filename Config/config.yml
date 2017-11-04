@@ -7,6 +7,12 @@ parameters:
   noreply_email: 'noreply@mvc.com'
   some_api_key: '13e2f42f452f1ft3vtt'
 routing:
+  image:
+    pattern: '/bookImage/{id}'
+    controller: DefaultController
+    action: 'bookLogoAction'
+    parameters:
+      id: '[0-9]+'
   homepage:
     pattern: '/'
     controller: DefaultController
@@ -56,14 +62,16 @@ routing:
     controller: DefaultController
     action: 'getApiKey'
   api:
-    pattern: '/api/{controller}/{method}/{params}/*api_key={api_key}'
+    pattern: '/api/{controller}/{method}*'
     controller: SecurityController
     action: 'apiAction'
     parameters:
       controller: '[a-zA-Z]+'
       method: '[a-zA-Z]+'
-      params: '[a-zA-Z0-9]{0,}'
-      api_key: '[a-zA-Z0-9]+'
 api_list:
   Book:
-    resp: 'application/json'
+    parameters: ''
+  Category:
+    parameters: ''
+  Author:
+    parameters: ''

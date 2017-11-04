@@ -6,19 +6,19 @@ use MongoDB\BSON\Timestamp;
 
 class Book
 {
-    private $id;
-    
-    private $title;
-    
-    private $description;
-    
-    private $price;
-    
-    private $active;
-    
-    private $created;
-    
-    private $category;
+    public $id;
+
+    public $title;
+
+    public $description;
+
+    public $price;
+
+    public $active;
+
+    public $created;
+
+    public $category;
 
     /**
      * Book constructor.

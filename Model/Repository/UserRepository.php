@@ -21,15 +21,22 @@ class UserRepository
         if (!$data) {
             return null;
         }
-
         return (new User())
             ->setEmail($data['email'])
             ->setPassword($data['password'])
             ->setRole($data['role'])
-            ;
+            ->setApiKey($data['api_key']);
     }
     public function findByEmailPass($email,$pass){
 
+    }
+    public function checkApi($key){
+        $sth=$this->pdo->prepare('SELECT id FROM user WHERE api_key=:key');
+        $sth->execute(['key'=>$key]);
+        if($sth->fetch()==false) {
+            return false;
+        }
+        return true;
     }
 
 

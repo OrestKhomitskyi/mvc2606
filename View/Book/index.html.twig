@@ -6,11 +6,13 @@
     {%  for book in books %}
         <div class='col-md-4'>
             <div class="card" style="min-height: 200px; margin-top: 10px">
-              <!--<img class="card-img-top" src="..." alt="Card image cap">-->
+                {% set foo=book.Id %}
+                {% set foo=foo-1 %}
+              <img class="card-img-top" src="{{ "/storage/Books/%id%.jpg"|replace({'%id%':foo}) }}" alt="Card image cap">
               <div class="card-body" data-id="{{ book.Id }}">
                 <h4 class="card-title"> {{ book.title }} </h4>
                 <p class="card-text"> {{ book.price }} </p>
-                  <p class="card-text"> {{ book.getShortDescription() }} </p>
+                  <p classv="card-text"> {{ book.getShortDescription() }} </p>
                 <a href="/addtocart" class="btn btn-primary addToCart">Add to cart</a>
                 <a href="{{ "/show/%id%"|replace({'%id%':book.getId()}) }}" class="btn btn-success">Details</a>
               </div>

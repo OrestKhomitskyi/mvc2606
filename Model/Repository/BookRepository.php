@@ -59,9 +59,15 @@ class BookRepository implements IRepository
     public function getAll(){
         $pdo = $this->pdo;
         $sth = $pdo->query("SELECT * FROM book");
-        $data=$sth->fetchAll(\PDO::FETCH_ASSOC);
-
-        return $data;
+        $collection=array();
+        while ($data=$sth->fetch(\PDO::FETCH_ASSOC)){
+            $book=(new Book($data['title'],$data['description'],
+                $data['price'],$data['category_id']))->setId($data['id'])->setActive($data['active']);
+            $imageLink = 'http://'.$_SERVER['HTTP_HOST'].DS.'bookImage'.DS.$data["id"];
+            $book->imageLink=$imageLink;
+            $collection[]=$book;
+        }
+        return $collection;
     }
 
     public function getAmount(){

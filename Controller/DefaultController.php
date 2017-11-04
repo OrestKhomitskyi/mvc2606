@@ -54,5 +54,13 @@ class DefaultController extends Controller
     public function getApiKey(Request $request){
 
     }
+    public function bookLogoAction(Request $request){
+        $id=$request->get('id')-1;
+        $file=DS.'storage'.DS.'Books'.DS.$id.'.jpg';
+
+        echo "<img src='{$file}'>";
+
+        die;
+    }
 
 }

@@ -15,6 +15,24 @@ class User implements IEntity
     private $role;
     private $active;
     private $activationHash;
+    private $api_key;
+
+    /**
+     * @return mixed
+     */
+    public function getApiKey()
+    {
+        return $this->api_key;
+    }
+
+    /**
+     * @param mixed $api_key
+     */
+    public function setApiKey($api_key)
+    {
+        $this->api_key = $api_key;
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -139,6 +157,10 @@ class User implements IEntity
         if(!self::auth()){
             throw new AccessDeniedException();
         }
-
+    }
+    public static function isAdmin(){
+        if(self::auth()->role==self::ROLE_ADMIN)
+            return true;
+            else return false;
     }
 }
