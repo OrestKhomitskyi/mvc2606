@@ -23,9 +23,11 @@ spl_autoload_register(function($className) {
     }
     require $path;
 });
-
-
+//
+//error_reporting(E_ALL | E_STRICT);
+//ini_set('display_errors', 'On');
 try {
+
     //composer
     require ROOT.'vendor/autoload.php';
 
@@ -98,7 +100,7 @@ try {
     }
 
     $content = $controller->$action($request);
-    
+
 } catch (\Exception $e) {
     dump($e);
     $content = $e->getMessage();
